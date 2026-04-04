@@ -71,15 +71,19 @@ The `Portfolio.sql` file contains the following explorations:
 - Filtering with `WHERE continent IS NOT NULL`
 
 ## Key DAX Measures Used
-
-Case Fatality Rate
+```dax
+-- Case Fatality Rate
 Case Fatality Rate (CFR) = 
 FORMAT(
     DIVIDE(SUM('Table1'[total_deaths]), SUM('Table1'[total_cases]), 0) * 100,
     "0.00"
 ) & "%"
 
-Monthly Infection Rate Trend
+-- Global Death Rate per 100K
+Global Death Rate (per 100K) = 
+DIVIDE(SUM('Table1'[total_deaths]), SUM('Table3'[Population]), 0) * 100000
+
+-- Monthly Infection Rate Trend
 CFR Trend = 
 VAR latestMonth = MONTH(MAX('Table4'[date]))
 VAR latestYear = YEAR(MAX('Table4'[date]))
@@ -100,7 +104,7 @@ RETURN
 IF(change > 0,
     "▲ " & FORMAT(change, "0.00") & "% vs prev month",
     "▼ " & FORMAT(ABS(change), "0.00") & "% vs prev month")
-
+```
 
 ## Data Credit
 
