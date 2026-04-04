@@ -46,7 +46,7 @@ The `Portfolio.sql` file contains the following explorations:
 | Visual | Data source | Insight |
 |---|---|---|
 | KPI cards | Table 1 | Global totals at a glance |
-| Line chart | Table 4 | Infection rate rising every month without exception |
+| Line chart | Table 4 | Infection rate rising every Quarter without exception |
 | Donut chart | Table 2 | Europe and N. America account for 58% of all deaths |
 | Bar chart | Table 3 | Small European nations hardest hit proportionally |
 | Table | Table 3 | Top 15 countries by raw case count |
