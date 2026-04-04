@@ -9,9 +9,7 @@ This is an end-to-end data analytics project that explores global COVID-19 trend
 **Tools used:** SQL Server (SSMS) · Power BI · DAX
 
 ## Project Workflow
-...
 Raw Data → SQL Exploration → Exported Tables → Power BI Dashboard
-...
 
 1. Wrote SQL queries to explore and transform two raw datasets (CovidDeaths, CovidVaccinations)
 2. Calculated key metrics including Case Fatality Rate, infection rate by population, and rolling vaccinations using CTEs and window functions
@@ -54,7 +52,71 @@ The `Portfolio.sql` file contains the following explorations:
 | Table | Table 3 | Top 15 countries by raw case count |
 
 ## Key Findings
+1. **USA had the highest cases with 32.3m confirmed cases**, nearly double india despite having less than a quarter of the population
+2.  **Small European nations were hardest hit proportionally**, with Andorra having the highest infection rate 17.13% of its population, followed by montenegro at 15.51% and czechia at 15.23%
+3. **India's infection rate was only 1.39%** despite 19.2M cases , a direct result of its 1.38 billion population absorbing the impact
+4. **Europe led continental deaths** at 1,016,750, accounting for 32% of all global deaths despite having a smaller population than Asia
+5. **Case Fatality Rate of 2.11%**, meaning roughly 1 in 47 confirmed cases resulted in death globally
+6. **Infection rates rose every single month** without exception, from near zero in early 2020 to 2.70% average by April 2021
+7. **39.8 billion vaccine doses** were administered globally
 
+
+## Key SQL Concepts Used
+
+- `CAST` and `NULLIF` for safe division
+- `GROUP BY` and aggregate functions (`MAX`, `SUM`)
+- Window functions with `OVER` and `PARTITION BY`
+- Common Table Expressions (CTEs)
+- `JOIN` across two datasets
+- Filtering with `WHERE continent IS NOT NULL`
+
+## Key DAX Measures Used
+
+```dax
+-- Case Fatality Rate
+Case Fatality Rate (CFR) = 
+FORMAT(
+    DIVIDE(SUM('Table1'[total_deaths]), SUM('Table1'[total_cases]), 0) * 100,
+    "0.00"
+) & "%"
+
+Monthly Infection Rate Trend
+CFR Trend = 
+VAR latestMonth = MONTH(MAX('Table4'[date]))
+VAR latestYear = YEAR(MAX('Table4'[date]))
+VAR prevM = MONTH(EDATE(MAX('Table4'[date]),-1))
+VAR prevY = YEAR(EDATE(MAX('Table4'[date]),-1))
+VAR current = CALCULATE(
+    AVERAGE('Table4'[PercentPopulationInfected]),
+    MONTH('Table4'[date]) = latestMonth,
+    YEAR('Table4'[date]) = latestYear
+)
+VAR previous = CALCULATE(
+    AVERAGE('Table4'[PercentPopulationInfected]),
+    MONTH('Table4'[date]) = prevM,
+    YEAR('Table4'[date]) = prevY
+)
+VAR change = DIVIDE(current - previous, previous, 0) * 100
+RETURN
+IF(change > 0,
+    "▲ " & FORMAT(change, "0.00") & "% vs prev month",
+    "▼ " & FORMAT(ABS(change), "0.00") & "% vs prev month")
+
+---
+
+## Data Credit
+
+Dataset obtained from [Alex The Analyst](https://github.com/AlexTheAnalyst/PortfolioProjects) — CovidDeaths.xlsx and CovidVaccinations.xlsx from the PortfolioProjects repository. Original data sourced from Our World in Data COVID-19 dataset.
+
+All SQL queries, DAX measures, data transformations and dashboard design are my own work.
+
+---
+
+## Author
+
+**Lilian Okeke**  
+Data Analytics Portfolio Project  
+[GitHub](https://github.com/OkekeLilian) · [LinkedIn](https://www.linkedin.com/in/okeke-lilian-ba5baa244/)
 
 
 
