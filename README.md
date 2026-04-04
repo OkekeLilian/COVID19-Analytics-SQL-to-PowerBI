@@ -72,8 +72,7 @@ The `Portfolio.sql` file contains the following explorations:
 
 ## Key DAX Measures Used
 
-```dax
--- Case Fatality Rate
+Case Fatality Rate
 Case Fatality Rate (CFR) = 
 FORMAT(
     DIVIDE(SUM('Table1'[total_deaths]), SUM('Table1'[total_cases]), 0) * 100,
@@ -102,7 +101,6 @@ IF(change > 0,
     "▲ " & FORMAT(change, "0.00") & "% vs prev month",
     "▼ " & FORMAT(ABS(change), "0.00") & "% vs prev month")
 
----
 
 ## Data Credit
 
@@ -110,7 +108,7 @@ Dataset obtained from [Alex The Analyst](https://github.com/AlexTheAnalyst/Portf
 
 All SQL queries, DAX measures, data transformations and dashboard design are my own work.
 
----
+
 
 ## Author
 
